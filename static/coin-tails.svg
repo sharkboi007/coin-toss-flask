@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500">
+  <defs>
+    <radialGradient id="gold" cx="40%" cy="30%" r="80%">
+      <stop offset="0%" stop-color="#f7eb9e"/>
+      <stop offset="40%" stop-color="#d2a841"/>
+      <stop offset="100%" stop-color="#7a5c1d"/>
+    </radialGradient>
+    <linearGradient id="arch" x1="20%" y1="30%" x2="80%" y2="70%">
+      <stop offset="0%" stop-color="#f7d085"/>
+      <stop offset="100%" stop-color="#d09f45"/>
+    </linearGradient>
+  </defs>
+  <circle cx="250" cy="250" r="220" fill="url(#gold)" stroke="#f5e5b0" stroke-width="14"/>
+  <path d="M125 300 Q145 140 250 110 Q355 140 375 300 Z" fill="url(#arch)" stroke="#997231" stroke-width="10"/>
+  <path d="M156 310 Q250 160 344 310" fill="none" stroke="#5e3d18" stroke-width="20" stroke-linecap="round"/>
+  <circle cx="250" cy="250" r="32" fill="#3b2a17"/>
+  <text x="50%" y="70%" text-anchor="middle" font-family="Segoe UI, sans-serif" font-size="30" fill="#422e13">Tails</text>
+  <text x="50%" y="80%" text-anchor="middle" font-family="Segoe UI, sans-serif" font-size="24" fill="#422e13">Indian 1₹</text>
+</svg>

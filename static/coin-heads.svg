@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500">
+  <defs>
+    <radialGradient id="gold" cx="40%" cy="30%" r="80%">
+      <stop offset="0%" stop-color="#f7eb9e"/>
+      <stop offset="40%" stop-color="#d2a841"/>
+      <stop offset="100%" stop-color="#7a5c1d"/>
+    </radialGradient>
+    <linearGradient id="face" x1="20%" y1="18%" x2="80%" y2="82%">
+      <stop offset="0%" stop-color="#f9f0d4"/>
+      <stop offset="100%" stop-color="#d9c18b"/>
+    </linearGradient>
+  </defs>
+  <circle cx="250" cy="250" r="220" fill="url(#gold)" stroke="#f5e5b0" stroke-width="14"/>
+  <circle cx="250" cy="250" r="150" fill="url(#face)" stroke="#a27f35" stroke-width="10"/>
+  <circle cx="250" cy="210" r="40" fill="#5a3b1f"/>
+  <path d="M170 260 C190 230 210 218 255 238 C300 218 320 230 340 260" fill="none" stroke="#5a3b1f" stroke-width="18" stroke-linecap="round"/>
+  <circle cx="210" cy="186" r="14" fill="#5a3b1f"/>
+  <circle cx="290" cy="186" r="14" fill="#5a3b1f"/>
+  <text x="50%" y="78%" text-anchor="middle" font-family="Segoe UI, sans-serif" font-size="30" fill="#422e13">Heads</text>
+  <text x="50%" y="87%" text-anchor="middle" font-family="Segoe UI, sans-serif" font-size="24" fill="#422e13">Indian 1₹</text>
+</svg>

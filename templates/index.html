@@ -5,23 +5,207 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Coin Toss</title>
     <style>
-      body { font-family: Arial, sans-serif; background: #f5f5f5; text-align: center; padding: 4rem; }
-      .card { background: white; padding: 2rem; border-radius: 10px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); display: inline-block; }
-      button { background: #0078d4; color: white; border: none; padding: 0.75rem 1.5rem; font-size: 1rem; border-radius: 6px; cursor: pointer; }
-      button:hover { background: #005a9e; }
-      .result { margin-top: 1.5rem; font-size: 1.25rem; font-weight: bold; }
+      :root {
+        color-scheme: dark;
+        font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      }
+      body {
+        margin: 0;
+        min-height: 100vh;
+        display: grid;
+        place-items: center;
+        background: radial-gradient(circle at top, #1f3d7a 0%, #0b1830 45%, #02060f 100%);
+        color: #f3f4f6;
+      }
+      .page-shell {
+        width: min(95vw, 780px);
+        padding: 2rem;
+      }
+      .hero {
+        text-align: center;
+        margin-bottom: 1.5rem;
+      }
+      .hero h1 {
+        margin: 0;
+        font-size: clamp(2.5rem, 4vw, 4rem);
+        letter-spacing: -0.04em;
+      }
+      .hero p {
+        margin: 1rem auto 0;
+        max-width: 28rem;
+        color: #cbd5e1;
+        font-size: 1rem;
+      }
+      .card {
+        background: rgba(15, 23, 42, 0.92);
+        border: 1px solid rgba(148, 163, 184, 0.16);
+        border-radius: 28px;
+        padding: 2rem;
+        box-shadow: 0 30px 80px rgba(0, 0, 0, 0.4);
+      }
+      .coin-scene {
+        display: grid;
+        place-items: center;
+        gap: 1.5rem;
+      }
+      .coin-image {
+        width: 220px;
+        max-width: 90vw;
+        aspect-ratio: 1;
+        border-radius: 50%;
+        box-shadow: 0 22px 60px rgba(0, 0, 0, 0.32);
+        transform-style: preserve-3d;
+        transition: transform 0.35s ease;
+      }
+      .coin-image.flipping {
+        animation: flip 0.85s ease-out forwards;
+      }
+      .coin-preview {
+        display: grid;
+        place-items: center;
+        width: 100%;
+      }
+      @keyframes flip {
+        0% { transform: perspective(700px) rotateX(10deg) rotateY(-20deg); }
+        30% { transform: perspective(700px) rotateX(720deg) rotateY(340deg); }
+        70% { transform: perspective(700px) rotateX(1080deg) rotateY(640deg); }
+        100% { transform: perspective(700px) rotateX(1080deg) rotateY(640deg); }
+      }
+      .stats {
+        display: grid;
+        gap: 1rem;
+        margin-top: 1rem;
+        text-align: left;
+      }
+      .button-group {
+        display: flex;
+        justify-content: center;
+      }
+      button {
+        border: none;
+        border-radius: 999px;
+        padding: 1rem 2rem;
+        font-size: 1rem;
+        font-weight: 700;
+        color: #0b1221;
+        background: linear-gradient(135deg, #a5f3fc 0%, #38bdf8 100%);
+        cursor: pointer;
+        box-shadow: 0 16px 30px rgba(56, 189, 248, 0.32);
+        transition: transform 0.25s ease, box-shadow 0.25s ease, filter 0.25s ease;
+      }
+      button:hover {
+        transform: translateY(-2px);
+        filter: brightness(1.05);
+      }
+      button:disabled {
+        opacity: 0.7;
+        cursor: default;
+        transform: none;
+      }
+      .result {
+        margin-top: 1.25rem;
+        padding: 1rem 1.2rem;
+        border-radius: 18px;
+        background: rgba(14, 165, 233, 0.12);
+        border: 1px solid rgba(56, 189, 248, 0.16);
+        font-size: 1.15rem;
+        font-weight: 700;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.75rem;
+        color: #dbeafe;
+      }
+      .result span {
+        display: inline-flex;
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        background: #22c55e;
+        box-shadow: 0 0 18px rgba(34, 197, 94, 0.45);
+      }
+      .result strong {
+        color: #eff6ff;
+      }
+      .sparkle {
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        overflow: visible;
+      }
+      .sparkle::before,
+      .sparkle::after {
+        content: "";
+        position: absolute;
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(56, 189, 248, 0.35) 0%, transparent 65%);
+        filter: blur(20px);
+      }
+      .sparkle::before { top: -35px; left: 10%; }
+      .sparkle::after { bottom: -45px; right: 12%; }
     </style>
   </head>
   <body>
-    <div class="card">
-      <h1>Coin Toss</h1>
-      <p>Press the button to toss a coin.</p>
-      <form method="post">
-        <button type="submit">Toss Coin</button>
-      </form>
-      {% if result %}
-      <div class="result">Result: {{ result }}</div>
-      {% endif %}
+    <div class="page-shell">
+      <section class="hero">
+        <h1>Coin Toss</h1>
+        <p>Flip a shiny coin and see whether luck lands on Heads or Tails. The more you toss, the luckier your streak feels.</p>
+      </section>
+      <div class="card">
+        <div class="coin-scene">
+          <div class="coin-preview">
+            <img
+              id="coin"
+              class="coin-image"
+              src="{{ url_for('static', filename='coin-' ~ (result|lower if result else 'default') ~ '.svg') }}"
+              alt="{{ result or 'Indian 1 rupee' }} coin"
+            />
+          </div>
+          <div class="button-group">
+            <form method="post" id="tossForm">
+              <button type="submit" id="tossButton" name="action" value="toss">Toss Coin</button>
+              <button type="submit" name="action" value="reset" style="margin-left: 1rem; background: #ff758f; box-shadow: 0 16px 30px rgba(255, 117, 143, 0.24);">Reset</button>
+            </form>
+          </div>
+          <div class="stats">
+            <div>Total tosses: <strong>{{ toss_count }}</strong></div>
+            <div>Heads: <strong>{{ heads_count }}</strong></div>
+            <div>Tails: <strong>{{ tails_count }}</strong></div>
+            <div>Current leader: <strong>{{ leader }}</strong></div>
+            <div>Last result: <strong>{{ result or '—' }}</strong></div>
+          </div>
+          {% if result %}
+          <div class="result"><span></span><strong>Result:</strong> {{ result }}</div>
+          {% endif %}
+        </div>
+        <div class="sparkle"></div>
+      </div>
     </div>
+    <script>
+      const form = document.getElementById('tossForm');
+      const coin = document.getElementById('coin');
+      const button = document.getElementById('tossButton');
+
+      form.addEventListener('submit', event => {
+        const submitter = event.submitter;
+        if (submitter && submitter.value === 'reset') {
+          return; // allow reset action to submit normally
+        }
+        if (button.disabled) {
+          return;
+        }
+        event.preventDefault();
+        button.disabled = true;
+        button.textContent = 'Flipping...';
+        coin.classList.remove('flipping');
+        void coin.offsetWidth;
+        coin.classList.add('flipping');
+
+        setTimeout(() => {
+          form.submit();
+        }, 850);
+      });
+    </script>
   </body>
 </html>
