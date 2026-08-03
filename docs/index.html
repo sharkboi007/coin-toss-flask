@@ -122,8 +122,26 @@
         color: #422c12;
       }
       .coin-face.tails .center {
-        font-size: 1.05rem;
+        font-size: 1.4rem;
+        font-weight: 800;
         color: #422c12;
+      }
+      .coin-face.tails .symbol {
+        font-size: 4rem;
+        color: #2b1f0f;
+      }
+      .coin-face.tails .top,
+      .coin-face.tails .bottom {
+        color: #2b1f0f;
+      }
+      .coin-face.tails .top {
+        letter-spacing: 0.2em;
+      }
+      .coin-face.tails .bottom {
+        letter-spacing: 0.18em;
+      }
+      .coin-face.tails {
+        background: radial-gradient(circle at 40% 30%, rgba(255,255,255,0.12), transparent 40%);
       }
       .buttons {
         display: flex;
@@ -191,10 +209,10 @@
       <div class="coin-stage">
         <div class="coin" id="coin">
           <div class="coin-face heads" id="coinFace">
-            <div class="top">BHARAT</div>
-            <div class="symbol">₹</div>
+            <div class="top" id="faceTop">BHARAT</div>
+            <div class="symbol" id="faceSymbol">₹</div>
             <div class="center" id="faceCenter">Flip me</div>
-            <div class="bottom">EK RUPIYA</div>
+            <div class="bottom" id="faceBottom">EK RUPIYA</div>
           </div>
         </div>
         <div class="buttons">
@@ -221,6 +239,9 @@
       const leaderText = document.getElementById('leaderText');
       const resultText = document.getElementById('resultText');
       const faceCenter = document.getElementById('faceCenter');
+      const faceSymbol = document.getElementById('faceSymbol');
+      const faceTop = document.getElementById('faceTop');
+      const faceBottom = document.getElementById('faceBottom');
 
       let tossCount = 0;
       let headsCount = 0;
@@ -248,9 +269,13 @@
       }
 
       function setCoinFace(side) {
-        coinFace.classList.toggle('heads', side === 'Heads');
-        coinFace.classList.toggle('tails', side === 'Tails');
-        faceCenter.textContent = side === 'Heads' ? 'Heads' : 'Tails';
+        const isHeads = side === 'Heads';
+        coinFace.classList.toggle('heads', isHeads);
+        coinFace.classList.toggle('tails', !isHeads);
+        faceCenter.textContent = isHeads ? 'Heads' : 'Tails';
+        faceSymbol.textContent = isHeads ? '₹' : 'T';
+        faceTop.textContent = isHeads ? 'BHARAT' : 'TAILS';
+        faceBottom.textContent = isHeads ? 'EK RUPIYA' : 'FLIP SIDE';
       }
 
       tossButton.addEventListener('click', () => {
